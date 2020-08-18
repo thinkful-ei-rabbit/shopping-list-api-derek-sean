@@ -51,11 +51,11 @@ const handleNewItemSubmit = function () {
     const newItemName = $('.js-shopping-list-entry').val();
     $('.js-shopping-list-entry').val('');
     api.createItem(newItemName)
-      .then(res => res.json())
       .then((newItem) => {
         store.addItem(newItem);
         render();
-      });
+      })
+      .catch(err => console.error(err));
   });
 }
 
@@ -72,7 +72,6 @@ const handleDeleteItemClicked = function () {
     api.deleteItem(id, {
       name: item
     })
-      .then(res => res.json())
       .then(newItem => {
         store.findAndDelete(id);
         render();
@@ -89,7 +88,6 @@ const handleEditShoppingItemSubmit = function () {
     api.updateItem(id, {
       name: itemName
     })
-      .then(res => res.json())
       .then(newItem => {
         store.findAndUpdate(id, {
           name: itemName
@@ -107,7 +105,6 @@ const handleItemCheckClicked = function () {
     api.updateItem(id, {
       checked: !item.checked
     })
-      .then(res => res.json())
       .then(newItem => {
         store.findAndUpdate(id, {checked: !item.checked});
         render();
