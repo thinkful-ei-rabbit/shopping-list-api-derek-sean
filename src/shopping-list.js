@@ -51,12 +51,12 @@ const handleNewItemSubmit = function () {
     const newItemName = $('.js-shopping-list-entry').val();
     $('.js-shopping-list-entry').val('');
     api.createItem(newItemName)
-    .then(res => res.json())
-    .then((newItem) => {
-      store.addItem(newItem);
-      render();
-    });
-});
+      .then(res => res.json())
+      .then((newItem) => {
+        store.addItem(newItem);
+        render();
+      });
+  });
 }
 
 const getItemIdFromElement = function (item) {
@@ -82,18 +82,34 @@ const handleEditShoppingItemSubmit = function () {
     event.preventDefault();
     const id = getItemIdFromElement(event.currentTarget);
     const itemName = $(event.currentTarget).find('.shopping-item').val();
-    store.findAndUpdateName(id, itemName);
-    render();
+    api.updateItem(id, {
+        name: itemName
+      })
+      .then(res => res.json())
+      .then(newItem => {
+        store.findAndUpdate(id, {
+          name: itemName
+        });
+        render();
+      })
+      .catch(err => console.error(err.message));
   });
 };
 
 const handleItemCheckClicked = function () {
   $('.js-shopping-list').on('click', '.js-item-toggle', event => {
     const id = getItemIdFromElement(event.currentTarget);
-    store.findAndToggleChecked(id);
-    render();
+    const item = store.findById(id);
+    api.updateItem(id, {
+        checked: !item.checked
+      })
+      .then(res => res.json())
+      .then(newItem => {
+        store.findAndUpdate(id, {checked: !item.checked});
+        render();
+      });
   });
-};
+}
 
 const handleToggleFilterClick = function () {
   $('.js-filter-checked').click(() => {
