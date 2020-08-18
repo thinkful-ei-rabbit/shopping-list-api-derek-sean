@@ -26,7 +26,19 @@ function updateItem(id, updateData) {
   });
 }
 
+function deleteItem(id, updateData) {
+  let removedItem = JSON.stringify(updateData);
+  return fetch(`${BASE_URL}/items/${id}`, {
+    method:'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: removedItem
+  });
+}
+
 export default {
+  deleteItem,
   getItems,
   createItem,
   updateItem,
