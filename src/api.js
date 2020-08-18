@@ -1,7 +1,7 @@
-const BASE_URL = 'https://thinkful-list-api.herokuapp.com/ds'
+const BASE_URL = 'https://thinkful-list-api.herokuapp.com/sean';
 
 function getItems() {
-  return Promise.resolve('Successful response!')
+  return fetch(`${BASE_URL}/items`)
 }
 
 export default {
